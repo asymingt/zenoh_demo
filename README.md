@@ -1,6 +1,6 @@
 # Overview
 
-This is a small demo workspace showing how Zenoh can be used with Bazel. Right now, it shows a full Zenoh build with tests, and a simple example application where a zenohd server is started with multiple plugins, including the backend filesystem plugin. This is done without `rules_oci`, and we plan to add C and C++ support.
+This is a small demo workspace showing how Zenoh can be used with Bazel. Right now, it shows a full Zenoh build with tests, and a simple example application where a zenohd server is started with multiple plugins, including the backend filesystem plugin. We also include zenoh-pico (a C implementation of zenoh) and zenoh-cpp (a C++ implementation of zenoh).
 
 # Instructions
 
@@ -13,7 +13,7 @@ git clone https://github.com/asymingt/zenoh_demo.git
 git submodule update --init --recursive
 ```
 
-To build and run the example application, run:
+To build and run the zenoh router, run:
 
 ```bash
 bazel run //:zenohd
@@ -48,9 +48,11 @@ INFO: Running command line: bazel-bin/zenohd ../zenoh+/zenohd/zenohd ./zenohd.js
 To build and run tests, use the following commands:
 
 ```bash
-bazel test @zenoh//...
 bazel test @rust-rocksdb//...
 bazel test @zenoh-backend-filesystem//...
+bazel test @zenoh-cpp//...
+bazel test @zenoh-pico//...
+bazel test @zenoh//...
 ```
 
 # Notes
