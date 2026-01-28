@@ -77,7 +77,8 @@ INFO: Build completed successfully, 1 total action
 2. We build `librocksdb-sys` from source in order to use our hermetic clang toolchain. It uses `@rocksdb` from the BCR which is not version-matche. We should fix this.
 3. We build `zenoh-backend-filesystem` with crate.annotations to ensure that it gets the correct versions of `serde_json` and `async-trait` (local versus from `zenoh`).
 4. The zenohd plugins are shared objects that are loaded at runtime. We have a Starlark rule called `remap_runfiles` that remaps the runfiles to the root of the runfiles tree. This allows us to set the plugin and backend plugin search paths to `..` to find them reliably. See the example configuration below.
-5. Some `zenoh` and `zenoh-pico`tests don't yet pass because they are busy being ported from the cmake build system.
+5. The `zenoh-cpp` module uses the `zeno-pico` C implementation of zenoh. However, since this does not include a `zenohd` binary, we re-use the target from our `zenoh` module as a router instance for the tests. 
+6. Some `zenoh` and `zenoh-pico` tests don't yet pass because they are busy being ported from the cmake build system.
 
 ```json5
 {
