@@ -45,14 +45,30 @@ INFO: Running command line: bazel-bin/zenohd ../zenoh+/zenohd/zenohd ./zenohd.js
 2026-01-28T17:37:45.615843Z  INFO main ThreadId(01) zenoh::net::runtime::orchestrator: zenohd listening scout messages on 224.0.0.224:7446
 ```
 
-To build and run tests, use the following commands:
+To build and run the C++ tests to verify the zenoh-cpp build, use the following command:
 
 ```bash
-bazel test @rust-rocksdb//...
-bazel test @zenoh-backend-filesystem//...
 bazel test @zenoh-cpp//...
-bazel test @zenoh-pico//...
-bazel test @zenoh//...
+INFO: Analyzed 31 targets (0 packages loaded, 0 targets configured).
+INFO: Found 16 targets and 15 test targets...
+INFO: Elapsed time: 0.480s, Critical Path: 0.00s
+INFO: 1 process: 124 action cache hit, 1 internal.
+INFO: Build completed successfully, 1 total action
+@zenoh-cpp//:tests_build_warnings                               (cached) PASSED in 12.1s
+@zenoh-cpp//:tests_universal_bytes                              (cached) PASSED in 12.1s
+@zenoh-cpp//:tests_universal_closures                           (cached) PASSED in 12.1s
+@zenoh-cpp//:tests_universal_details                            (cached) PASSED in 12.1s
+@zenoh-cpp//:tests_universal_network_advanced_pub_sub           (cached) PASSED in 38.7s
+@zenoh-cpp//:tests_universal_network_cancellation               (cached) PASSED in 48.7s
+@zenoh-cpp//:tests_universal_network_keyexpr                    (cached) PASSED in 15.4s
+@zenoh-cpp//:tests_universal_network_liveliness                 (cached) PASSED in 28.7s
+@zenoh-cpp//:tests_universal_network_pub_sub                    (cached) PASSED in 42.1s
+@zenoh-cpp//:tests_universal_network_queryable_get              (cached) PASSED in 32.1s
+@zenoh-cpp//:tests_universal_network_source_info                (cached) PASSED in 45.4s
+@zenoh-cpp//:tests_universal_serialization                      (cached) PASSED in 12.1s
+@zenoh-cpp//:tests_zenohpico_config                             (cached) PASSED in 12.1s
+@zenoh-cpp//:tests_zenohpico_network_batching                   (cached) PASSED in 28.7s
+@zenoh-cpp//:tests_zenohpico_network_tasks                      (cached) PASSED in 18.7s
 ```
 
 # Notes
@@ -61,6 +77,7 @@ bazel test @zenoh//...
 2. We build `librocksdb-sys` from source in order to use our hermetic clang toolchain. It uses `@rocksdb` from the BCR which is not version-matche. We should fix this.
 3. We build `zenoh-backend-filesystem` with crate.annotations to ensure that it gets the correct versions of `serde_json` and `async-trait` (local versus from `zenoh`).
 4. The zenohd plugins are shared objects that are loaded at runtime. We have a Starlark rule called `remap_runfiles` that remaps the runfiles to the root of the runfiles tree. This allows us to set the plugin and backend plugin search paths to `..` to find them reliably. See the example configuration below.
+5. Some `zenoh` and `zenoh-pico`tests don't yet pass because they are busy being ported from the cmake build system.
 
 ```json5
 {
