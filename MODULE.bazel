@@ -24,10 +24,14 @@ bazel_dep(name = "rules_shell", version = "0.6.1")
 bazel_dep(name = "rust-rocksdb", version = "0.24.0")
 bazel_dep(name = "zenoh", version = "1.7.2")
 bazel_dep(name = "zenoh-backend-filesystem", version = "1.7.2")
+bazel_dep(name = "zenoh-pico", version = "1.7.2")
+bazel_dep(name = "zenoh-cpp", version = "1.7.2")
 
 local_path_override(module_name = "rust-rocksdb", path = "./submodules/rust-rocksdb")
 local_path_override(module_name = "zenoh", path = "./submodules/zenoh")
 local_path_override(module_name = "zenoh-backend-filesystem", path = "./submodules/zenoh-backend-filesystem")
+local_path_override(module_name = "zenoh-pico", path = "./submodules/zenoh-pico")
+local_path_override(module_name = "zenoh-cpp", path = "./submodules/zenoh-cpp")
 
 # C++ toolchain (offers amd64 and arm64 for linux, windows and darwin)
 

@@ -1,5 +1,2 @@
 bazel-*
 MODULE.bazel.lock
-submodules/zenoh-pico
-submodules/zenoh-c
-submodules/zenoh-cpp
