@@ -1,0 +1,9 @@
+[submodule "submodules/zenoh"]
+	path = submodules/zenoh
+	url = https://github.com/asymingt/zenoh.git
+[submodule "submodules/zenoh-backend-filesystem"]
+	path = submodules/zenoh-backend-filesystem
+	url = https://github.com/asymingt/zenoh-backend-filesystem.git
+[submodule "submodules/rust-rocksdb"]
+	path = submodules/rust-rocksdb
+	url = https://github.com/asymingt/rust-rocksdb.git

@@ -1,0 +1,41 @@
+# Copyright 2026 Open Source Robotics Foundation, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+bazel_dep(name = "platforms", version = "1.0.0")
+bazel_dep(name = "toolchains_llvm", version = "1.6.0")
+bazel_dep(name = "rules_cc", version = "0.2.16")
+bazel_dep(name = "rules_rust", version = "0.68.1")
+bazel_dep(name = "rules_rust_bindgen", version = "0.68.1")
+bazel_dep(name = "rules_shell", version = "0.6.1")
+
+# Custom modules (for development) -- we can get these into the BCR.
+
+bazel_dep(name = "rust-rocksdb", version = "0.24.0")
+bazel_dep(name = "zenoh", version = "1.7.2")
+bazel_dep(name = "zenoh-backend-filesystem", version = "1.7.2")
+
+local_path_override(module_name = "rust-rocksdb", path = "./submodules/rust-rocksdb")
+local_path_override(module_name = "zenoh", path = "./submodules/zenoh")
+local_path_override(module_name = "zenoh-backend-filesystem", path = "./submodules/zenoh-backend-filesystem")
+
+# C++ toolchain (offers amd64 and arm64 for linux, windows and darwin)
+
+llvm = use_extension("@toolchains_llvm//toolchain/extensions:llvm.bzl", "llvm")
+llvm.toolchain(llvm_version = "20.1.7")
+use_repo(llvm, "llvm_toolchain")
+register_toolchains("@llvm_toolchain//:all")
+
+# Rust bindgen toolchain (overrides the default to use our LLVM toolchain above)
+
+register_toolchains("//toolchains:bindgen_llvm_toolchain")
