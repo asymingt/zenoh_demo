@@ -1,6 +1,8 @@
 # Overview
 
-This is a small demo workspace showing how Zenoh can be used with Bazel. Right now, it shows a full Zenoh build with tests, and a simple example application where a zenohd server is started with multiple plugins, including the backend filesystem plugin. We also include zenoh-pico (a C implementation of zenoh) and zenoh-cpp (a C++ implementation of zenoh).
+This is a small demo workspace showing how Zenoh can be used with Bazel. Right now, it shows a full Zenoh build with tests, and a simple example application where a zenohd server is started with multiple plugins, including the backend filesystem plugin.
+
+The `zenoh-cpp` project also shows how C++ bindings can be built, using both zenoh-pico (a C implementation of zenoh) and zenoh-c (a C++ implementation of zenoh).
 
 # Instructions
 
@@ -49,16 +51,44 @@ To build and run the C++ tests to verify the zenoh-cpp build, use the following 
 
 ```bash
 bazel test @zenoh-cpp//...
-INFO: Analyzed 31 targets (0 packages loaded, 0 targets configured).
-INFO: Found 16 targets and 15 test targets...
-INFO: Elapsed time: 0.480s, Critical Path: 0.00s
+INFO: Analyzed 36 targets (0 packages loaded, 0 targets configured).
+INFO: Found 19 targets and 17 test targets...
+INFO: Elapsed time: 0.650s, Critical Path: 0.00s
+INFO: 1 process: 206 action cache hit, 1 internal.
+INFO: Build completed successfully, 1 total action
+@zenoh-cpp//:tests_build_warnings                               (cached) PASSED in 12.1s
+@zenoh-cpp//:tests_universal_bytes                              (cached) PASSED in 12.1s
+@zenoh-cpp//:tests_universal_closures                           (cached) PASSED in 12.1s
+@zenoh-cpp//:tests_universal_details                            (cached) PASSED in 12.1s
+@zenoh-cpp//:tests_universal_network_advanced_pub_sub           (cached) PASSED in 30.1s
+@zenoh-cpp//:tests_universal_network_cancellation               (cached) PASSED in 37.1s
+@zenoh-cpp//:tests_universal_network_keyexpr                    (cached) PASSED in 12.6s
+@zenoh-cpp//:tests_universal_network_liveliness                 (cached) PASSED in 20.1s
+@zenoh-cpp//:tests_universal_network_pub_sub                    (cached) PASSED in 60.7s
+@zenoh-cpp//:tests_universal_network_queryable_get              (cached) PASSED in 19.6s
+@zenoh-cpp//:tests_universal_network_source_info                (cached) PASSED in 32.1s
+@zenoh-cpp//:tests_universal_serialization                      (cached) PASSED in 12.1s
+@zenoh-cpp//:tests_zenohc_config                                (cached) PASSED in 12.1s
+@zenoh-cpp//:tests_zenohc_shm_api                               (cached) PASSED in 15.2s
+@zenoh-cpp//:tests_zenohpico_config                                     SKIPPED
+@zenoh-cpp//:tests_zenohpico_network_batching                           SKIPPED
+@zenoh-cpp//:tests_zenohpico_network_tasks                              SKIPPED
+```
+
+By default, `zenoh-cpp` is built above `zenoh-c`. To build it against `zenoh-pico` just add `--@zenoh-cpp//:use_zenoh_pico=true` to your `.bazelrc` or as a command line flag. For example:
+
+```
+bazel test @zenoh-cpp//... --@zenoh-cpp//:use_zenoh_pico=true
+INFO: Analyzed 36 targets (0 packages loaded, 0 targets configured).
+INFO: Found 19 targets and 17 test targets...
+INFO: Elapsed time: 0.613s, Critical Path: 0.00s
 INFO: 1 process: 124 action cache hit, 1 internal.
 INFO: Build completed successfully, 1 total action
 @zenoh-cpp//:tests_build_warnings                               (cached) PASSED in 12.1s
 @zenoh-cpp//:tests_universal_bytes                              (cached) PASSED in 12.1s
 @zenoh-cpp//:tests_universal_closures                           (cached) PASSED in 12.1s
 @zenoh-cpp//:tests_universal_details                            (cached) PASSED in 12.1s
-@zenoh-cpp//:tests_universal_network_advanced_pub_sub           (cached) PASSED in 38.7s
+@zenoh-cpp//:tests_universal_network_advanced_pub_sub           (cached) PASSED in 35.4s
 @zenoh-cpp//:tests_universal_network_cancellation               (cached) PASSED in 48.7s
 @zenoh-cpp//:tests_universal_network_keyexpr                    (cached) PASSED in 15.4s
 @zenoh-cpp//:tests_universal_network_liveliness                 (cached) PASSED in 28.7s
@@ -69,6 +99,8 @@ INFO: Build completed successfully, 1 total action
 @zenoh-cpp//:tests_zenohpico_config                             (cached) PASSED in 12.1s
 @zenoh-cpp//:tests_zenohpico_network_batching                   (cached) PASSED in 28.7s
 @zenoh-cpp//:tests_zenohpico_network_tasks                      (cached) PASSED in 18.7s
+@zenoh-cpp//:tests_zenohc_config                                        SKIPPED
+@zenoh-cpp//:tests_zenohc_shm_api                                       SKIPPED
 ```
 
 # Notes
