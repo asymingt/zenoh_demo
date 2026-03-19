@@ -1,0 +1,69 @@
+# Copyright 2026 Open Source Robotics Foundation, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# The module name must only contain lowercase letters, numbers, and
+# underscores because it becomes the ROS package name for any message
+# service or action defined in the module.
+
+module(
+    name = "rcr_zenoh_demo",
+    version = "0.0.1",
+    compatibility_level = 0,
+)
+
+# BCR dependencies
+
+bazel_dep(name = "protobuf", version = "33.4")
+bazel_dep(name = "rules_cc", version = "0.2.17")
+bazel_dep(name = "rules_python", version = "1.8.3")
+bazel_dep(name = "aspect_rules_py", version = "1.8.6")
+bazel_dep(name = "rules_rust", version = "0.68.1")
+bazel_dep(name = "toolchains_llvm", version = "1.6.0")
+
+# RCR dependencies
+
+bazel_dep(name = "rclcpp", version = "30.0.0")
+bazel_dep(name = "rclpy", version = "9.2.0")
+bazel_dep(name = "rmw_implementation", version = "3.1.1")
+bazel_dep(name = "rmw_zenoh_cpp", version = "0.8.1")
+bazel_dep(name = "rosidl_adapter_proto", version = "0.0.1")
+bazel_dep(name = "rosidl_cmake", version = "5.0.0")
+bazel_dep(name = "rosidl_generator_cpp", version = "5.0.0")
+bazel_dep(name = "rosidl_generator_py", version = "0.25.0")
+bazel_dep(name = "sensor_msgs", version = "5.8.1")
+bazel_dep(name = "std_msgs", version = "5.8.1")
+
+# Hermetic C++ toolchain
+
+llvm = use_extension("@toolchains_llvm//toolchain/extensions:llvm.bzl", "llvm")
+llvm.toolchain(llvm_version = "20.1.7")
+use_repo(llvm, "llvm_toolchain")
+
+register_toolchains("@llvm_toolchain//:all")
+
+# Python configuration
+
+python = use_extension("@rules_python//python/extensions:python.bzl", "python")
+python.toolchain(
+    is_default = True,
+    python_version = "3.12",
+)
+
+# Use a RUST compiler known to work with Zenoh.
+
+rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
+rust.toolchain(
+    edition = "2021",
+    versions = ["1.85.0"],
+)
