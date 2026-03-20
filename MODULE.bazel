@@ -33,12 +33,14 @@ bazel_dep(name = "toolchains_llvm", version = "1.6.0")
 
 # RCR dependencies
 
+bazel_dep(name = "rclc", version = "6.2.0")
 bazel_dep(name = "rclcpp", version = "30.0.0")
 bazel_dep(name = "rclpy", version = "9.2.0")
 bazel_dep(name = "rmw_implementation", version = "3.1.1")
 bazel_dep(name = "rmw_zenoh_cpp", version = "0.8.1")
 bazel_dep(name = "rosidl_adapter_proto", version = "0.0.1")
 bazel_dep(name = "rosidl_cmake", version = "5.0.0")
+bazel_dep(name = "rosidl_generator_c", version = "5.0.0")
 bazel_dep(name = "rosidl_generator_cpp", version = "5.0.0")
 bazel_dep(name = "rosidl_generator_py", version = "0.25.0")
 bazel_dep(name = "sensor_msgs", version = "5.8.1")

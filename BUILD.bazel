@@ -14,6 +14,7 @@
 
 load("@aspect_rules_py//py:defs.bzl", "py_binary")
 load("@rosidl_adapter_proto//:rules.bzl", "proto_ros_library")
+load("@rosidl_generator_c//:rules.bzl", "c_ros_library")
 load("@rosidl_generator_cpp//:rules.bzl", "cc_ros_library")
 load("@rosidl_generator_py//:rules.bzl", "py_ros_library")
 load("@rules_cc//cc:defs.bzl", "cc_binary")
@@ -31,6 +32,13 @@ proto_ros_library(
 
 # Generate language bindings to the ros_interface in ./msg/BUILD.bazel.
 
+c_ros_library(
+    name = "example_ros_c_msgs",
+    deps = [
+        "//msg:ExampleMessage",
+    ],
+)
+
 cc_ros_library(
     name = "example_ros_cc_msgs",
     deps = [
@@ -45,7 +53,29 @@ py_ros_library(
     ],
 )
 
-# C++ examples (note that cc_ros_library includes proto type support)
+# C examples
+
+cc_binary(
+    name = "example_ros_publisher_c",
+    srcs = ["src/example_ros_publisher.c"],
+    copts = ["-Wno-unused"],
+    deps = [
+        ":example_ros_c_msgs",
+        "@rclc",
+    ],
+)
+
+cc_binary(
+    name = "example_ros_subscriber_c",
+    srcs = ["src/example_ros_subscriber.c"],
+    copts = ["-Wno-unused"],
+    deps = [
+        ":example_ros_c_msgs",
+        "@rclc",
+    ],
+)
+
+# C++ examples
 
 cc_binary(
     name = "example_ros_publisher_cc",
